@@ -1,0 +1,1272 @@
+<!DOCTYPE html>
+<html lang="ko">
+ <head>
+	<title>Camper Van</title>
+	<meta charset="utf-8"/>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+	<style>
+		/*################ reset ###############*/
+			*{margin:0;padding:0;}
+			body{margin:0;padding:0;}
+			li{list-style-type:none;}
+			a:link, a:visited{text-decoration:none; color:#222;}
+			img{border:none;}
+		
+		/*################ a 태그 ###############*/
+			body{color:#222;}
+			a:hover, a:focus{/*text-decoration:underline; */color:#1cbcb7;}
+
+		/*################ wrap ###############*/
+			#wrap{/*max-width:1920px; */width:100%; margin:0 auto;}
+
+		/*################ headerWrap / header(1920px) ###############*/
+			#headerWrap{width:100%;/* position:absolute; left:0; top:0; z-index:1;*/ background-color:#fff;}
+			#header{width:100%;/* margin:0 auto;*/}
+
+			#header a .plus{color:#FD8024;}
+			#header a .plus:hover{color:#1cbcb7;}
+
+		/*################ topManuArea / topManu(1260px) ###############*/
+			#topManuArea{width:100%; border-bottom:1px solid #ddd;}
+			#topManu{width:1260px; height:50px; line-height:50px; margin:0 auto;}
+
+			#topManu li{display:inline; font-size:14px;}
+			#topManu li a{padding:0 10px;}
+
+		/*################ lego_area / logo ###############*/
+			#lego_area{width:100%;}
+			#lego_area .lego_area{width:1260px; margin:0 auto;}
+			#lego_area .lego_area div{float:left;}
+			/*
+				1260px / 3 == 420px
+			*/
+		/*################ lego_area / black ###############*/
+			#lego_area .black{width:420px; height:150px;}
+
+		/*################ mobHeaderBtn(모바일용헤더) ###############*/
+			#mobHeaderBtn{display:none;}
+			
+		/*################ legoArea / main ###############*/
+			#lego_area .main{width:420px;}
+			/*
+				420 - 100 == 320
+				320 / 2 == 160
+				150(높이) - 100 == 50 / 2 ==25
+			*/
+			#logo{width:100px; padding-left:160px; padding-top:25px;}
+			#logo a img{width:100%; transition:transform 2s ease-in-out 0.2s;}
+			#lego_area .main:hover a img{transform:rotate(360deg)/* scale(0.8);*/}
+			
+			#lego_area .lego_area:after{content:""; display:block; clear:both; background-color:#ccf;}
+			#lego_area:after{content:""; display:block; clear:both; background-color:#ccf;}
+		
+		/*################ lego_area / sch ###############*/
+			#sch{width:420px;}
+			/*
+				420 / 6 == 70px
+				높이150 - 40 == 110 / 2 == 55px
+			*/
+			#sch form{width:160px; height:40px; padding-top:55px; float:left;}
+			#sch fieldset{border:none;}
+			#sch legend{display:none;}
+
+			/*
+				돋보기 크기 40*40으로
+				70 - 40 == 30남음
+				+120 == 150
+				70 + 120 ==190px
+			*/
+			#sch .input{width:120px; float:left;}
+			#sch .input input{width:100%; height:37px; border:none;/*1px solid #ccc*/}
+			#sch .btn{width:20px; padding:10px 0 0 10px; float:left;}
+			#sch .btn a img{width:100%;}
+			
+		/*####### infoMenu ######*/
+			#infoMenu ul{width:260px; float:left;}
+			/*
+				420 - 160 == 260
+				350 - 230 == 120
+			*/
+			#infoMenu li{height:40px; padding-top:55px; line-height:40px; font-size:14px; text-align:right; float:left;}
+			#infoMenu li a{padding:0 10px;}
+			#infoMenu li a span{padding:0 4px; background-color:#ccc; color:#fff; border-radius:14px;}
+
+		/*################ gnbArea / gnb(1260px) ###############*/
+			#gnbArea{width:100%; border-top:1px solid #ddd; border-bottom:1px solid #f1f1f1;}
+			#gnbArea div{width:1260px; margin:0 auto;}
+			/*
+				250 * 3 == 750px*/
+			
+			#gnb{width:100%; height:50px; line-height:50px;/* margin:0 auto; */}
+		
+		/*######## gnb / .gnb(li) #######*/
+			/*
+				1260 / 3 == 420px
+
+				가장 긴 글이 249 == 250*/
+			
+			#gnb .gnb{text-align:center; float:left;}
+		
+		/*######## gnb / .gnb / .plus(span) #######*/
+			#gnb .gnb a{padding:0 27px;}
+
+			#gnb .gnb ul{width:180px; font-size:13px; background-color:rgba(225,225,225,0.5); display:none; position:absolute;}
+		
+		/*######## gnb / .gnb / ul / li #######*/
+			#gnb .gnb ul li{width:100%; text-align:left;}
+			#gnb .gnb ul li a{padding:0 10px;}
+
+
+		/*######## 기능 #######
+			script의 click으로
+			#gnb li:hover ul{display:block;}*/
+
+			#gnb .gnb ul li:hover{background-color:rgba(0,0,0,0.1);}
+			#gnb .gnb ul li:hover a{color:#1cbcb7;}
+
+
+		/*################ gnb 가상객체 ###############
+			#gnb:after{content""; display:block; clear:both;}*/
+
+		/*################ container ###############*/
+			#container{width:100%;}
+			#camperArea{width:1260px; margin:0 auto 100px;}
+
+			#camperArea .road{padding:30px 0; border-bottom:1px solid #ddd;}
+
+			#camper{width:800px; height:710px; overflow:hidden; position:relative; float:left; }
+
+		/*################ .main(ul) ###############*/
+			#camper .main{width:8000px;}
+
+			#camper .main li{width:800px; height:650px; float:left;}
+			#camper .main li a img{width:100%;}
+			#camper .main:after{content:""; display:block; clear:both;}
+
+		/*################ camper /button(ul) ###############*/
+			#camper p{width:40px; height:40px; position:absolute; top:96%; transform:translatey(-50%);}
+			#camper p img{height:80%; padding-top:10%; opacity:0.5;}
+
+			#camper p:hover{opacity:0.8}
+
+			#camper .prevBtn{left:35px;}
+			#camper .nextBtn{right:0;}
+
+		/*################ sub(ul) ###############*/
+			#under{width:700px; margin:0 auto; overflow:hidden;}
+			#under .sub{width:1220px;}
+			/*100+10+10+2 = 122px*/
+			#under .sub li{width:100px; height:55px; margin:0 10px; border:1px solid #ccc; text-align:center; overflow:hidden; float:left;}
+			#under .sub li a img{height:100%;}
+
+			#under .sub:after{content:""; display:block; clear:both;}
+
+		/*################ buyArea ###############*/
+			#buyArea{width:459px; border-left:1px dashed #ddd; height:710px; float:left;}
+			/*460-50px*/
+			#buyArea p{padding-bottom:20px;}
+			#buyArea .desc{width:100%; text-indent:50px;}
+			#buyArea .field{padding-top:130px; color:#888;}
+			#buyArea .title{font-size:26px; line-height:40px; /*overflow:hidden; white-space:nowrap; text-overflow:ellipsis;*/}
+			
+			label, input{font-size:26px; height:40px; line-height:40px;}
+			input{border:none;}
+			label[for="num"]{font-size:16px; padding:0 15px;}
+			input[type="button"]{cursor:pointer;}
+
+			/*선택, 수량*/
+			
+			#menuSelect, #num{border:1px solid #ccc; border-radius:5px;}
+			#menuSelect{width:330px; height:30px; font-size:18px; color:#666;}
+			#num{text-align:center;}
+
+			
+			/*점선기준*/
+			#buyArea .account{padding-top:30px; border-top:1px dashed #ddd;}
+			#button0{padding:0 10px; font-size:14px; background-color:rgba(253, 128, 36,0.2); vertical-align:middle; border-radius:5px;}
+			#result{width:180px; color:#1cbcb7; text-align:right; vertical-align:middle;}
+
+			#buyArea .bag{float:left; padding-left:30px;}
+			#buyArea .bag a{font-size:30px; color:rgba(253, 128, 36,0.2);}
+			#buyArea .bag a:hover{font-size:30px; color:rgba(253, 128, 36,1);}
+			
+			#buyArea .camperOd{float:left;}
+			#button1{width:220px; height:50px; font-size:16px; background-color:rgba(253, 128, 36,1);
+			border-radius:5px; border:2px solid rgba(253, 128, 36,1);}
+			#button1:hover{background-color:rgba(253, 128, 36,0);}
+			
+
+			#camperArea:after{content:""; display:block; clear:both;}
+
+		/*################ tabArea ###############*/
+			#tabArea{width:100%; padding-top:100px; border-top:1px solid #ddd; overflow:hidden;}
+			#tabArea .tab{width:1260px; margin:0 auto;}
+			/*
+				1260 / 3 == 420
+				420-2 = 418
+			*/
+			#tabArea .tab li{width:418px; height:60px; line-height:60px; text-align:center; float:left;
+			border-top:1px solid rgba(0,0,0,0); border-right:1px solid rgba(0,0,0,0); border-left:1px solid rgba(0,0,0,0); border-bottom:1px solid rgba(0,0,0,0.2);}
+			#tabArea .tab li a{display:block; border-radius:8px 8px 0 0;}
+			/*선택된 a*/
+			#tabArea .tab li .selected{border-top:1px solid rgba(0,0,0,0.2); border-right:1px solid rgba(0,0,0,0.2); border-left:1px solid rgba(0,0,0,0.2)/*; border-bottom:1px solid rgba(0,0,0,0);*/}
+
+			#tabArea .tab:after{content:""; display:block; clear:both;}
+
+		/*################ panel ###############*/
+			#tabArea .panel{width:1260px; margin:50px auto;}
+
+			/*#########*/
+			#tabArea .features li{width:400px; margin:0 10px; text-align:center; float:left;}
+			#tabArea .features li img{width:100%;}
+			
+			#tabArea .features li .text0{font-size:20px; padding-top:30px}
+			#tabArea .features li .text1{font-size:14px; padding:10px 0 80px;}
+
+			#tabArea .features:after{content:""; display:block; clear:both;}
+
+			/*#########*/
+			#tabArea .creator{width:100%;}
+			#tabArea .creator .text3{width:50%; float:left;}
+			#tabArea .creator .img{width:48%; margin-left:2%; float:left;}
+			#tabArea .creator .img img{width:100%;}
+
+			#tabArea .creator:after{content:""; display:block; clear:both;}
+
+			/*#########*/
+			#tabArea .day{line-height:50px;}
+			
+			#tabArea .star{height:25px;}
+			#tabArea .star .img{width:25px; padding:0 2px; float:left;}
+			#tabArea .star .img img{width:100%;}
+			#tabArea span{padding-left:10px; font-size:14px; color:#777;}
+
+			#tabArea .title{font-size:20px; padding-top:15px;}
+			#tabArea .mainT{padding:20px 0; font-size:18px; color:#1cbcb7; font-weight:700;}
+			
+			#tabArea .mimg{width:420px; float:left;}
+			#tabArea .mimg img{width:100%;}
+			#tabArea .text{width:800px; margin-left:40px; margin-top:50px; float:left;}
+
+			#tabArea .review:after{content:""; display:block; clear:both;}
+
+		/*################ footerWrap(footer영역) ###############*/
+			#footerWrap{width:100%; background-color:#fafafa; padding-bottom:50px;}
+
+		/*################ footer ###############*/
+			#footer{width:100%; font-size:14px;}
+			#footer a{padding:0 10px;}
+
+			#footer .footerBorder{border-top:2px solid #ddd; border-bottom:1px solid #dedede;}
+		
+		/*################ footer_info(1260px) ###############*/
+			#footer_info{width:1260px; margin:0 auto;}
+			#footer_info ul{width:50%; padding:10px 0; float:left;}
+
+		/*######### footer_info(ul) ##########*/
+			/*
+				1260 / 2 == 630px
+				근데 50%, follow_us랑 같은 선상의 위치로
+			*/
+			#footer_menu li{display:inline;}
+
+		/*######### follow_us(ul) ##########*/
+			#follow_us{text-align:right;}
+			#follow_us li{display:inline-block; width:20px; height:20px; margin:0 5px; background-color:#7a7; overflow:hidden; border-radius:5px;}
+			#follow_us li a{padding:0;}
+			#follow_us li a img{width:100%;}
+			/*기능*/
+			#follow_us li:hover img,#follow_us li:focus img{margin-top:-20px;}
+
+			#footer_info:after{content:""; display:block; clear:both;}
+
+		/*################ footerContArea / footerCont ###############*/
+			#footerContArea{width:100%;}
+			#footerCont{width:1260px; margin:0 auto;}
+			#footerCont div{width:630px; float:left;}
+		
+		/*######### footerCont / logo(div) ##########*/
+			/*
+				1260 / 2 == 630px, 이것도 50%
+			*/
+			#footerCont .logo{padding:50px 0;}
+			#footerCont .logo div{border-right:1px solid #dedede;}
+			#footerCont .logo .lego{width:100px; margin-left:10px;}
+			#footerCont .logo .lego a{padding:0;}
+			#footerCont .logo .lego a img{width:100%; transition:transform 2s ease-out 0.2s;}
+			#footerCont .logo .lego:hover a img{transform:rotate(360deg) scale(0.8);}
+
+		/*######### footerCont / p ##########*/
+			#footerCont p{width:100%; margin-bottom:20px;}
+
+		/*######### footerCont / logo / location(p) ##########*/
+			/*630 / 3 == 210px, 210 - 20 == 190*/
+			#footerCont .location{width:190px; padding:10px; margin-left:10px; background-color:rgb(32,29,72);}
+			#footerCont .location span{padding:0 10px;}
+			#footerCont .location a{color:#fff;}
+
+			#footerCont .location:hover a{color:#1cbcb7;}
+
+		/*######### footerCont / subscribe(div) ##########*/
+			#footerCont .subscribe{padding:50px 0;}
+			/*
+				630px - 50px(padding-left) == 580px - 1 == 579
+			*/
+			#footerCont .subscribe div{width:579px; padding-left:50px;}
+			#footerCont .title{/*width:100%; */ height:30px;}
+			#footerCont .address{width:204px; height:40px; background-color:#fff; float:left;}
+
+			/*########*/
+			#address{width:100%; height:100%; text-indent:10px; background-color:rgba(255,255,255,1); border:1px solid rgb(253,128,36); font-size:14px;}
+
+			#footerCont .btn{width:50px; height:42px; float:left;}
+			#btn{width:100%; height:100%; background-color:rgb(253,128,36); border:1px solid rgb(253,128,36); border-radius:0 5px 5px 0; color:#fff; font-size:16px; cursor:pointer;}
+
+			#footerCont .btn:hover #btn{background-color:#fff;color:rgb(253,128,36);}
+
+			#footerCont:after{content:""; display:block; clear:both;}
+
+		/*######### copyrightArea / copyright ##########*/
+			#copyrightArea{width:100%; border-top:1px solid #ddd;}
+			#copyrightMenu{width:1260px; margin:0 auto;}
+			#copyrightMenu .border{padding-top:50px;}
+
+			#copyrightMenu ul{width:100%; padding:10px 0;}
+			#copyrightMenu li{display:inline-block;}
+			#copyright{width:100%; padding-top:30px;text-indent:10px;}
+			#copyright a{padding:0;}
+
+
+		/*########### 버리는 영역_임시보관소 ##########*/
+			h1{position:absolute; left:-9999px; width:1px; height:1px; font-size:1px; line-height:0; overflow:hidden;}
+	</style>
+	<script>
+		// ver-2
+		$(document).ready(function(){
+			/*헤더부분*/
+			$("#mobHeaderBtn").click(function(){
+				$("#gnbArea div").css({"display":"block"});
+			});
+
+			$("#gnb li a").click(function(){
+				$("#gnb li ul").slideUp(500);
+				$(this).next().slideDown(500);
+			});
+
+			/*##################################################*/
+
+			//$(".panel li:not(:first)").hide();
+
+			/*#################### 클릭후 ##################*/
+			
+			$(".tab li a").bind("click focusin",function(){
+				//$(".panel li").hide();
+				
+				$($(this).attr("href")).show();
+
+				$(".tab li a").removeClass();
+				$(this).addClass("selected");
+			});
+		
+		});
+
+		
+		/*############## 가격부분 ############*/
+		function total(){
+
+			// 판매가
+			var price = document.getElementById("price");
+			// 수량
+			var num = document.getElementById("num");
+			// 결과
+			var result = document.getElementById("result");
+
+			var menuSelect = document.getElementById("menuSelect");
+			//console.log(menuSelect);
+			
+			
+			if(menuSelect.value == "typeSelect"){
+				alert("제품을 선택하세요");
+				return false;
+			}
+
+			if(num.value == ""){
+				alert("수량을 입력하세요.");
+			}
+
+			/* 결과부분 = 판매가 * 수량 */
+			result.value = price.value * num.value;
+			// console.log(price);
+
+		}
+	</script>
+ </head>
+
+ <body>
+	<div id="wrap">
+		<div id="headerWrap">
+			<header id="header">
+				<h1>lego</h1>
+				<div id="topManuArea">
+					<ul id="topManu">
+						<li>
+							<a href="http://idph0203.dothome.co.kr/lego/" title="aboutUs">
+								About Us
+							</a>
+						</li>
+						<li>
+							<a href="http://idph0203.dothome.co.kr/lego/" title="play_zone">
+								PLAY ZONE
+							</a>
+						</li>
+					</ul>
+				</div>
+				<div id="lego_area">
+					<div class="lego_area">
+						<div class="black">
+							<div id="mobHeaderBtn">
+								<p>─</p>
+							</div>
+						</div>
+						<div class="main">
+							<div id="logo">
+								<a href="http://idph0203.dothome.co.kr/lego/" title="lego">
+									<img src="img/logo0.svg" alt="lego"/>
+								</a>
+							</div>
+						</div>
+						<div id="sch">
+							<form action="#" method="get">
+								<fieldset>
+									<legend>검색</legend>
+									<p class="input">
+										<input id="search" type="text" name="search" title="검색"/>
+									</p>
+									<p class="btn">
+										<a href="#" title="검색버튼">
+											<img src="img/search.png" alt="돋보기_이미지"/>
+										</a>
+									</p>
+								</fieldset>
+							</form>
+							<div id="infoMenu">
+								<ul>
+									<li>
+										<a href="#" title="login">login</a>
+									</li>
+									<li>
+										<a href="#" title="sign_up">sign_up</a>
+									</li>
+									<li>
+										<a href="#" title="basket">basket <span class="number">0</span></a>
+									</li>
+									<li>
+										<a href="#" title="vip">vip</a>
+									</li>
+								</ul>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div id="gnbArea">
+					<div>
+						<ul id="gnb">
+							<li class="gnb">
+								<a href="#" title="all">All<span class="plus">+</span></a>
+								<ul class="all">
+									<li>
+										<a href="#" title="see_all_SETS">
+											SEE ALL SETS
+										</a>
+									</li>
+									<li>
+										<a href="#" title="see_all_ages">
+											SEE ALL AGES
+										</a>
+									</li>
+									<li>
+										<a href="#" title="see_all_Interests">
+											SEE ALL INTERESTS
+										</a>
+									</li>
+									<li>
+										<a href="#" title="see_all_bricks">
+											SEE ALL BRICKS
+										</a>
+									</li>
+								</ul>
+							</li>
+							<li class="gnb">
+								<a href="#" title="set">Sets by theme</a>
+								<ul class="set">
+									<li>
+										<a href="#" title="architecture">
+											Architecture
+										</a>
+									</li>
+									<li>
+										<a href="#" title="batman">
+											Batman™
+										</a>
+									</li>
+									<li>
+										<a href="#" title="boost">
+											BOOST
+										</a>
+									</li>
+									<li>
+										<a href="#" title="brickHeadz">
+											BrickHeadz
+										</a>
+									</li>
+									<li>
+										<a href="#" title="brick_sketches">
+											Brick Sketches™
+										</a>
+									</li>
+									<li>
+										<a href="#" title="city">
+											City
+										</a>
+									</li>
+									<li>
+										<a href="#" title="disney">
+											Disney™
+										</a>
+									</li>
+									<li>
+										<a href="#" title="dots">
+											DOTS
+										</a>
+									</li>
+									<li>
+										<a href="#" title="friends">
+											Friends
+										</a>
+									</li>
+									<li>
+										<a href="#" title="harry_potter">
+											Harry Potter™
+										</a>
+									</li>
+								</ul>
+							</li>
+							<li class="gnb">
+								<a href="#" title="age">Age</a>
+								<ul class="age">
+									<li>
+										<a href="#" title="ages1">
+											1.5+
+										</a>
+									</li>
+									<li>
+										<a href="#" title="ages4">
+											4+
+										</a>
+									</li>
+									<li>
+										<a href="#" title="ages6">
+											6
+										</a>
+									</li>
+									<li>
+										<a href="#" title="ages9">
+											9
+										</a>
+									</li>
+									<li>
+										<a href="#" title="ages13">
+											13
+										</a>
+									</li>
+									<li>
+										<a href="#" title="ages18">
+											18
+										</a>
+									</li>
+								</ul>
+							</li>
+							<li class="gnb">
+								<a href="#" title="price_ranges">Price Ranges</a>
+								<ul class="price">
+									<li>
+										<a href="#" title="under_$25">
+											Under $25
+										</a>
+									</li>
+									<li>
+										<a href="#" title="$25_$50">
+											$25 - $50
+										</a>
+									</li>
+									<li>
+										<a href="#" title="$50_$75">
+											$50 - $75
+										</a>
+									</li>
+									<li>
+										<a href="#" title="$75_$100">
+											$75 - $100
+										</a>
+									</li>
+									<li>
+										<a href="#" title="over_$100">
+											Over $100
+										</a>
+									</li>
+								</ul>
+							</li>
+							<li class="gnb">
+								<a href="#" title="lego_merchandise">LEGO Merchandise</a>
+								<ul class="mer">
+									<li>
+										<a href="#" title="accessories">
+											Accessories
+										</a>
+									</li>
+									<li>
+										<a href="#" title="backpacks_lunch_boxes">
+											Backpacks &amp; Lunch Boxes
+										</a>
+									</li>
+									<li>
+										<a href="#" title="books">
+											Books
+										</a>
+									</li>
+									<li>
+										<a href="#" title="keychains">
+											Keychains
+										</a>
+									</li>
+									<li>
+										<a href="#" title="puzzles_board_games">
+											Puzzles &amp; Board games
+										</a>
+									</li>
+									<li>
+										<a href="#" title="role_play_costumes">
+											Role Play &amp; Costumes
+										</a>
+									</li>
+									<li>
+										<a href="#" title="stationery">
+											Stationery
+										</a>
+									</li>
+									<li>
+										<a href="#" title="storage">
+											Storage
+										</a>
+									</li>
+									<li>
+										<a href="#" title="keychains">
+											Keychains
+										</a>
+									</li>
+								</ul>
+							</li>
+							<li class="gnb">
+								<a href="#" title="interests">Interests</a>
+								<ul class="interest">
+									<li>
+										<a href="#" title="adults_welcome">
+											Adults Welcome
+										</a>
+									</li>
+									<li>
+										<a href="#" title="animals">
+											Animals
+										</a>
+									</li>
+									<li>
+										<a href="#" title="arts_and_crafts">
+											Arts and Crafts
+										</a>
+									</li>
+									<li>
+										<a href="#" title="buildings">
+											Buildings
+										</a>
+									</li>
+									<li>
+										<a href="#" title="cars">
+											Cars
+										</a>
+									</li>
+									<li>
+										<a href="#" title="coding_for_kids">
+											Coding for Kids
+										</a>
+									</li>
+									<li>
+										<a href="#" title="dragons">
+											Dragons
+										</a>
+									</li>
+									<li>
+										<a href="#" title="fantasy">
+											Fantasy
+										</a>
+									</li>
+									<li>
+										<a href="#" title="movies">
+											Movies
+										</a>
+									</li>
+								</ul>
+							</li>
+							<li class="gnb">
+								<a href="#" title="bricks">Bricks</a>
+								<ul class="bricks">
+									<li>
+										<a href="#" title="Pick a Brick">
+											Pick a Brick
+										</a>
+									</li>
+									<li>
+										<a href="#" title="brick_accessories_kits">
+											Brick Accessories &amp; Kits
+										</a>
+									</li>
+									<li>
+										<a href="#" title="arts_and_crafts">
+											Arts and Crafts
+										</a>
+									</li>
+								</ul>
+							</li>
+							<li class="gnb">
+								<a href="#" title="discover">DISCOVER</a>
+								<ul class="discover">
+									<li class="discover">
+										<a href="#" title="all_lego_themes">
+											All LEGO Themes
+										</a>
+									</li>
+									<li class="discover">
+										<a href="#" title="lego_news">
+											LEGO News
+										</a>
+									</li>
+									<li class="discover">
+										<a href="#" title="about_us">
+											About Us
+										</a>
+									</li>
+									<li class="discover">
+										<a href="#" title="adults_welcome">
+											Adults Welcome
+										</a>
+									</li>
+									<li class="discover">
+										<a href="#" title="lego_life_magazine">
+											LEGO Life Magazine
+										</a>
+									</li>
+									<li class="discover">
+										<a href="#" title="lego_life_app">
+											LEGO Life App
+										</a>
+									</li>
+								</ul>
+							</li>
+							<li class="gnb">
+								<a href="#" title="help">HELP</a>
+								<ul class="help">
+									<li class="help">
+										<a href="#" title="check_order_status">
+											Check Order Status
+										</a>
+									</li>
+									<li class="help">
+										<a href="#" title="delivery_n_returns">
+											Delivery &amp; Returns
+										</a>
+									</li>
+									<li class="help">
+										<a href="#" title="find_a_lego_store">
+											Find a LEGO Store
+										</a>
+									</li>
+									<li class="help">
+										<a href="#" title="find_building_instructions">
+											Find Building Instructions
+										</a>
+									</li>
+									<li class="help">
+										<a href="#" title="common_questions">
+											Common Questions
+										</a>
+									</li>
+									<li class="help">
+										<a href="#" title="contact_us">
+											Contact Us
+										</a>
+									</li>
+									<li class="help">
+										<a href="#" title="replacement_parts">
+											Replacement Parts
+										</a>
+									</li>
+								</ul>
+							</li>
+							<li class="gnb">
+								<a href="#" title="get_creative"><span class="plus">GET CREATIVE</span></a>
+							</li>
+						</ul>
+					</div>
+				</div>
+			</header>
+		</div>
+		<div id="container">
+			<div id="camperArea">
+				<p class="road">
+					<a href="#" title="home">Home</a> &gt;
+					<a href="#" title="creator">Creator Expert</a>
+					&gt; Volkswagen T2 Camper Van
+				</p>
+				<div id="camper">
+					<div>
+						<ul class="main">
+							<li>
+								<a href="#" title="camper01">
+									<img src="img/01.jpg" alt="camper01"/>
+								</a>
+							</li>
+							<li>
+								<a href="#" title="camper02">
+									<img src="img/02.jpg" alt="camper02"/>
+								</a>
+							</li>
+							<li>
+								<a href="#" title="camper03">
+									<img src="img/03.jpg" alt="camper03"/>
+								</a>
+							</li>
+							<li>
+								<a href="#" title="camper04">
+									<img src="img/04.jpg" alt="camper04"/>
+								</a>
+							</li>
+							<li>
+								<a href="#" title="camper05">
+									<img src="img/05.jpg" alt="camper05"/>
+								</a>
+							</li>
+							<li>
+								<a href="#" title="camper06">
+									<img src="img/06.jpg" alt="camper06"/>
+								</a>
+							</li>
+							<li>
+								<a href="#" title="camper07">
+									<img src="img/07.jpg" alt="camper07"/>
+								</a>
+							</li>
+							<li>
+								<a href="#" title="camper08">
+									<img src="img/08.jpg" alt="camper08"/>
+								</a>
+							</li>
+							<li>
+								<a href="#" title="camper09">
+									<img src="img/09.jpg" alt="camper09"/>
+								</a>
+							</li>
+							<li>
+								<a href="#" title="camper10">
+									<img src="img/10.jpg" alt="camper10"/>
+								</a>
+							</li>
+						</ul>
+					</div>
+					<div class="button">
+						<p class="prevBtn">
+							<a href="#none" title="prevBtn"><img src="img/button1.png" alt="button1"/></a>
+						</p>
+						<p class="nextBtn">
+							<a href="#none" title="nextBtn"><img src="img/button2.png" alt="button2"/></a>
+						</p>
+					</div>
+					<div id="under">
+						<div>
+							<ul class="sub">
+								<li>
+									<a href="#" title="camper01">
+										<img src="img/01.jpg" alt="camper01"/>
+									</a>
+								</li>
+								<li>
+									<a href="#" title="camper02">
+										<img src="img/02.jpg" alt="camper02"/>
+									</a>
+								</li>
+								<li>
+									<a href="#" title="camper03">
+										<img src="img/03.jpg" alt="camper03"/>
+									</a>
+								</li>
+								<li>
+									<a href="#" title="camper04">
+										<img src="img/04.jpg" alt="camper04"/>
+									</a>
+								</li>
+								<li>
+									<a href="#" title="camper05">
+										<img src="img/05.jpg" alt="camper05"/>
+									</a>
+								</li>
+								<li>
+									<a href="#" title="camper06">
+										<img src="img/06.jpg" alt="camper06"/>
+									</a>
+								</li>
+								<li>
+									<a href="#" title="camper07">
+										<img src="img/07.jpg" alt="camper07"/>
+									</a>
+								</li>
+								<li>
+									<a href="#" title="camper08">
+										<img src="img/08.jpg" alt="camper08"/>
+									</a>
+								</li>
+								<li>
+									<a href="#" title="camper09">
+										<img src="img/09.jpg" alt="camper09"/>
+									</a>
+								</li>
+								<li>
+									<a href="#" title="camper10">
+										<img src="img/10.jpg" alt="camper10"/>
+									</a>
+								</li>
+							</ul>
+						</div>
+					</div>
+				</div>
+				<div id="buyArea">
+					<div class="desc">
+						<p class="field">
+							<span class="point">Hard to find</span>
+						</p>
+						<p class="title">
+							Volkswagen T2 Camper Van
+						</p>
+						<p class="buy">
+							<label for="price">$</label>
+							<input id="price" type="text" value="179.99" title="price" readonly/>
+						</p>
+						<p>
+							<select id="menuSelect" title="Select">
+								<option value="typeSelect">------------------ Select -------------------</option>
+								<option value="Volkswagen T2 Camper Van">Volkswagen T2 Camper Van</option>
+							</select>
+						</p>
+						<p>
+							<input id="num" type="number" min="1" max="10"/>
+							<label for="num">Limit 10</label>
+						</p>
+						<p class="account">
+							<input id="button0" type="button" title="order" value="charge account" onclick="total();"/>
+							<label for="result">$</label>
+							<input id="result" type="text" title="result" readonly/>
+						</p>
+						<p class="bag">
+							<a href="#" title="bag"><span>♥</span></a>
+						</p>
+						<p class="camperOd">
+							<input id="button1" type="button" title="order" value="Order" onclick="total();"/>
+						</p>
+					</div>
+				</div>
+			</div>
+			<div id="tabArea">
+				<ul class="tab">
+					<li>
+						<a class="selected" href="#tab0" title="Features">Features</a>
+					</li>
+					<li>
+						<a href="#tab1" title="Specifications">Specifications</a>
+					</li>
+					<li>
+						<a href="#tab2" title="Customer">Customer Reviews</a>
+					</li>
+				</ul>
+				<ul class="panel">
+					<li id="tab0">
+						<ul class="features">
+							<li>
+								<p class="img">
+									<img src="img/11.jpg" alt="camper11"/>
+								</p>
+								<p class="text0">
+									Embark on the ultimate road trip
+								</p>
+								<p class="text1">
+									Build a faithful version of the camper with its iconic design.
+								</p>
+							</li>
+							<li>
+								<p class="img">
+									<img src="img/12.jpg" alt="camper12"/>
+								</p>
+								<p class="text0">
+									Get ready to hit the road
+								</p>
+								<p class="text1">
+									Start a journey that reveals clever design and faithful features.
+								</p>
+							</li>
+							<li>
+								<p class="img">
+									<img src="img/13.jpg" alt="camper13"/>
+								</p>
+								<p class="text0">
+									Simple but spacious
+								</p>
+								<p class="text1">
+									Inside is a mobile kitchen with stove, sink and refrigerator.
+								</p>
+							</li>
+							<li>
+								<p class="img">
+									<img src="img/14.jpg" alt="camper14"/>
+								</p>
+								<p class="text0">
+									Open to new adventures
+								</p>
+								<p class="text1">
+									Slide the side door to reveal the camper's detailed interior.
+								</p>
+							</li>
+							<li>
+								<p class="img">
+									<img src="img/15.jpg" alt="camper15"/>
+								</p>
+								<p class="text0">
+									Spirit of the 60s
+								</p>
+								<p class="text1">
+									Includes retro accessories like a surfboard and colorful decals.
+								</p>
+							</li>
+							<li>
+								<p class="img">
+									<img src="img/18.jpg" alt="camper18"/>
+								</p>
+								<p class="text0">
+									The journey awaits
+								</p>
+								<p class="text1">
+									Enjoy the ride with features like a new fabric folding pop-up roof.
+								</p>
+							</li>
+						</ul>
+					</li>
+					<li id="tab1">
+						<div class="creator">
+							<p class="text3">
+								Whether you’re reliving past adventures, planning future travels or simply want to celebrate your passion for camper vans, you’ll love this LEGO® Volkswagen T2 Camper Van (10279) model building project. Take your time building the camper van model then explore its detailed interior before placing it on display to remind you that there’s a world of adventure just around the corner.<br/><br/>
+
+								Packed with authentic details<br/>
+								Camper van fans will love all the neat design details packed into this VW model. New LEGO elements recreate much-loved features from the real camper van, including the iconic front windscreen, textile curtains and the textile pop-up tent. There’s also a new LEGO tire shape, working steering, a sliding door, surfboard, 2 folding chairs and flower-power stickers.<br/><br/>
+
+								Experience the journey<br/>
+								This set is part of a collection of LEGO building sets for adults who appreciate clever design and attention-to-detail. It offers an immersive build and will make a top gift for any VW camper fan.
+							</p>
+							<p class="img">
+								<img src="img/17.jpg" alt="camper17"/>
+							</p>
+						</div>
+					</li>
+					<li id="tab2">
+						<div>
+							<div>
+								<p class="day">September 1st, 2021</p>
+								<p class="star">
+									<span class="img">
+										<img src="img/block0.svg" alt="block0"/>
+									</span>
+									<span class="img">
+										<img src="img/block0.svg" alt="block0"/>
+									</span>
+									<span class="img">
+										<img src="img/block0.svg" alt="block0"/>
+									</span>
+									<span class="img">
+										<img src="img/block0.svg" alt="block0"/>
+									</span>
+									<span class="img">
+										<img src="img/block1.svg" alt="block1"/>
+									</span>
+									<span>4.0</span>
+								</p>
+								<p class="title">
+									Fabulous Nostalgia!
+								</p>
+							</div>
+							<p class="mainT">
+								I would recommend this to a friend!
+							</p>
+							<div class="review">
+								<p class="mimg">
+									<img src="img/16.jpg" alt="camper16"/>
+								</p>
+								<p class="text">
+									I am a big fan of the Creator Export line and when I saw this released I ordered right away. The color is awesome and I was excited to get towards the end. Upon completion the roof has a gap up front and could not figure what the issue was. I reviewed the instructions in detail and even rebuilt bag #10 and #11 and for the life of me, can get the roof to sit flush. So my excitement to finish resulted in a bit of frustration and my OCD is getting the better of me. I even took off the canopy cloth to see if that was causing it and still has a gap Only option is to display with roof open.
+								</p>
+							</div>
+						</div>
+					</li>
+				</ul>
+			</div>
+		</div>
+		<div id="footerWrap">
+			<div id="footer">
+				<div class="footerBorder">
+					<div id="footer_info">
+						<ul id="footer_menu">
+							<li>
+								<a href="#" title="about_us">
+									ABOUT US
+								</a>
+							</li>
+							<li>
+								<a href="#" title="support">
+									SUPPORT
+								</a>
+							</li>
+							<li>
+								<a href="#" title="attractions">
+									ATTRACTIONS
+								</a>
+							</li>
+							<li>
+								<a href="#" title="more_from_us">
+									MORE FROM US
+								</a>
+							</li>
+						</ul>
+						<ul id="follow_us"><!--팔로우 영역, 아이콘의 영역-->
+							<li>
+								<a href="#" title="facebook">
+									<img src="img/facebook.gif" alt="facebook"/>
+								</a>
+							</li>
+							<li>
+								<a href="#" title="twitter">
+									<img src="img/twitter.gif" alt="twitter"/>
+								</a>
+							</li>
+							<li>
+								<a href="#" title="instagram">
+									<img src="img/instagram.gif" alt="instagram"/>
+								</a>
+							</li>
+							<li>
+								<a href="#" title="youtube">
+									<img src="img/youtube.gif" alt="youtube"/>
+								</a>
+							</li>
+						</ul>
+					</div>
+				</div>
+				<div id="footerContArea">
+					<div id="footerCont">
+						<div class="logo"><!--footer부분의 로고-->
+							<div>
+								<p class="lego">
+									<a href="http://idph0203.dothome.co.kr/lego/" title="lego">
+										<img src="img/logo0.svg" alt="lego"/>
+									</a>
+								</p>
+								<p class="location">
+									<a href="#" title="location">
+										<span>+<!--아이콘--></span>United States
+									</a>
+								</p>
+								<p>
+									<a href="#" title="giftCards">
+										Gift Cards
+									</a>
+								</p>
+								<p>
+									<a href="#" title="legoCatalogue">
+										LEGO Catalogue
+									</a>
+								</p>
+							</div>
+						</div>
+						<div class="subscribe">
+							<div>
+								<p class="title">SUBSCRIBE TO LEGO® SHOP EMAILS</p>
+								<p class="address">
+									<input id="address" type="text" placeholder="your email address" title="address"/>
+								</p>
+								<p class="btn">
+									<input id="btn" type="submit" value="go" title="btn"/>
+								</p>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div id="copyrightArea">
+					<div id="copyrightMenu">
+						<div class="border">
+							<ul>
+								<li>
+									<a href="#" title="privacy_policy">
+										Privacy Policy
+									</a>
+								</li>
+								<li>
+									<a href="#" title="cookies">
+										Cookies
+									</a>
+								</li>
+								<li>
+									<a href="#" title="legal_notice">
+										Legal Notice
+									</a>
+								</li>
+								<li>
+									<a href="#" title="terms_of_use">
+										Terms of Use
+									</a>
+								</li>
+								<li>
+									<a href="#" title="digital_wellbeing">
+										Digital Wellbeing
+									</a>
+								</li>
+								<li>
+									<a href="#" title="accessibility">
+										Accessibility
+									</a>
+								</li>
+								<li>
+									<a href="#" title="cookieSettings">
+										Cookie Settings
+									</a>
+								</li>
+								<li>
+									<a href="#" title="do_not_sell_my_personal_information">
+										Do Not Sell My Personal Information
+									</a>
+								</li>
+							</ul>
+						</div>
+						<div id="copyright">
+							<p>
+								Copyrigh &copy; 2022 <a href="#" title="ParkJuHee">Park Ju Hee</a>. All Rights Reserved
+							</p>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+ </body>
+</html>
